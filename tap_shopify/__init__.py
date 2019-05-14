@@ -18,17 +18,19 @@ REQUIRED_CONFIG_KEYS = ["shop", "access_token", "api_key"]
 LOGGER = singer.get_logger()
 
 def initialize_shopify_client():
-    if ('access_token' in Context.config):
+    if 'access_token' in Context.config:
         print("using <access_token> " + Context.config['access_token'])
         access_token = Context.config['access_token']
         shop = Context.config['shop']
         session = shopify.Session(shop, access_token)
 
-    elif ('api_key' in Context.config):
+    elif 'api_key' in Context.config:
         print("using <api_key> " + Context.config['api_key'])
         api_key = Context.config['api_key']
         shop = Context.config['shop']
         session = shopify.Session(shop, api_key)
+
+    shopify.ShopifyResource.activate_session(session)
 
 def get_abs_path(path):
     return os.path.join(os.path.dirname(os.path.realpath(__file__)), path)
