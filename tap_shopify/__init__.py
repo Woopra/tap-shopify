@@ -14,30 +14,28 @@ from singer import Transformer
 from tap_shopify.context import Context
 import tap_shopify.streams # Load stream objects into Context
 
-REQUIRED_CONFIG_KEYS = ["shop", "access_token", "api_key"]
+REQUIRED_CONFIG_KEYS = ["shop", "api_key"]
 LOGGER = singer.get_logger()
 
 def initialize_shopify_client():
-    if 'access_token' in Context.config:
-        print(Context.config)
-        print("using <access_token> " + Context.config['access_token'])
+    api_key = Context.config['api_key']
+    shop = Context.config['shop']
+    session = shopify.Session(shop, api_key)
+    shopify.ShopifyResource.activate_session(session)
 
-        access_token = Context.config['access_token']
-        shop = Context.config['shop']
-        scope = "read_customers,write_customers,read_analytics,read_orders,write_script_tags";
-        redirectURI = "https://woopra.com/callback";
-        client_id = Context.config['api_key']
-        session = shopify.Session(shop, access_token, client_id)
-        shopify.Session.create_permission_url(session, scope, redirectURI)
-        shopify.Session.request_token(session, redirectURI)
-        shopify.ShopifyResource.activate_session(session)
+    # if 'access_token' in Context.config:
+    # print(Context.config)
+    # print("using <access_token> " + Context.config['access_token'])
 
-    elif 'api_key' in Context.config:
-        print("using <api_key> " + Context.config['api_key'])
-        api_key = Context.config['api_key']
-        shop = Context.config['shop']
-        session = shopify.Session(shop, api_key)
-        shopify.ShopifyResource.activate_session(session)
+    access_token = Context.config['access_token']
+    shop = Context.config['shop']
+    scope = "read_customers,write_customers,read_analytics,read_orders,write_script_tags";
+    redirectURI = "https://woopra.com/callback";
+    # client_id = Context.config['api_key']
+    # session = shopify.Session(shop, access_token, client_id)
+    # shopify.Session.create_permission_url(session, scope, redirectURI)
+    # shopify.Session.request_token(session, redirectURI)
+    # shopify.ShopifyResource.activate_session(session)
 
 def get_abs_path(path):
     return os.path.join(os.path.dirname(os.path.realpath(__file__)), path)
