@@ -116,6 +116,7 @@ class Stream():
     # with shopify_error_handling to get 429 and 500 handling.
     @shopify_error_handling
     def call_api(self, query_params):
+        print(query_params)
         return self.replication_object.find(**query_params)
 
     def get_objects(self):

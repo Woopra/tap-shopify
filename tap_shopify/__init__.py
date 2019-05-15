@@ -19,18 +19,25 @@ LOGGER = singer.get_logger()
 
 def initialize_shopify_client():
     if 'access_token' in Context.config:
+        print(Context.config)
         print("using <access_token> " + Context.config['access_token'])
+
         access_token = Context.config['access_token']
         shop = Context.config['shop']
-        session = shopify.Session(shop, access_token)
+        scope = "read_customers,write_customers,read_analytics,read_orders,write_script_tags";
+        redirectURI = "https://woopra.com/callback";
+        client_id = Context.config['api_key']
+        session = shopify.Session(shop, access_token, client_id)
+        shopify.Session.create_permission_url(session, scope, redirectURI)
+        shopify.Session.request_token(session, redirectURI)
+        shopify.ShopifyResource.activate_session(session)
 
     elif 'api_key' in Context.config:
         print("using <api_key> " + Context.config['api_key'])
         api_key = Context.config['api_key']
         shop = Context.config['shop']
         session = shopify.Session(shop, api_key)
-
-    shopify.ShopifyResource.activate_session(session)
+        shopify.ShopifyResource.activate_session(session)
 
 def get_abs_path(path):
     return os.path.join(os.path.dirname(os.path.realpath(__file__)), path)
