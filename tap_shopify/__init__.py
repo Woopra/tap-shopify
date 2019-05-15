@@ -27,10 +27,10 @@ def initialize_shopify_client():
     # print(Context.config)
     # print("using <access_token> " + Context.config['access_token'])
 
-    access_token = Context.config['access_token']
-    shop = Context.config['shop']
-    scope = "read_customers,write_customers,read_analytics,read_orders,write_script_tags";
-    redirectURI = "https://woopra.com/callback";
+    # access_token = Context.config['access_token']
+    # shop = Context.config['shop']
+    # scope = "read_customers,write_customers,read_analytics,read_orders,write_script_tags";
+    # redirectURI = "https://woopra.com/callback";
     # client_id = Context.config['api_key']
     # session = shopify.Session(shop, access_token, client_id)
     # shopify.Session.create_permission_url(session, scope, redirectURI)
